@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The DevX Use-Case Mapping · Sharrp Ventures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0A0A0A; --ink-2:#1A1A1A; --muted:#5C6066; --muted-2:#8A8F96;
+  --rule:#E5E5E5; --rule-2:#F0F0F0;
+  --paper:#FFFFFF; --paper-2:#FAFAF8; --paper-3:#F4F4F1;
+  --accent:#1E6FFF; --accent-soft:#E8F0FF;
+  --warn:#C0392B; --ok:#0A7C53;
+  --f-display:'Inter Tight',-apple-system,BlinkMacSystemFont,sans-serif;
+  --f-serif:'Source Serif 4',Georgia,serif;
+  --f-mono:'JetBrains Mono','SFMono-Regular',monospace;
+  --gutter:5%;
+  --maxw:100%;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);color:var(--ink);font-family:var(--f-display);
+  font-feature-settings:"ss01","cv11","tnum";
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.5;
+}
+.full{width:100%;max-width:var(--maxw);margin:0 auto;padding-left:0;padding-right:0}
+.masthead .inner{padding-left:5%;padding-right:5%}
+
+/* ---------- masthead ---------- */
+.masthead{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.masthead .inner{display:flex;justify-content:space-between;align-items:center;height:72px}
+.brand{display:flex;align-items:baseline;gap:8px;font-weight:600;letter-spacing:-.01em;cursor:pointer}
+.brand .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block;transform:translateY(1px)}
+.brand .name{font-size:16px}
+.masthead .nav{display:flex;gap:6px;align-items:center}
+.masthead .nav a{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:8px 14px;border:1px solid transparent;transition:.15s;cursor:pointer}
+.masthead .nav a:hover{color:var(--ink)}
+.masthead .nav a.active{color:var(--accent);border-color:var(--rule)}
+@media(max-width:640px){.masthead .nav a{padding:6px 9px;letter-spacing:.06em}}
+
+/* ---------- route fade ---------- */
+.route{display:none;animation:fade .45s ease}
+.route.show{display:block;padding:0 5%}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ---------- hero ---------- */
+.hero{padding:96px 0 0}
+.hero-inner{max-width:1280px}
+.eyebrow{font-family:var(--f-mono);font-size:11px;color:var(--accent);letter-spacing:.16em;text-transform:uppercase;margin-bottom:22px}
+h1.display{font-family:var(--f-display);font-weight:500;font-size:clamp(46px,7vw,104px);line-height:.95;letter-spacing:-.03em;margin:0 0 28px;max-width:16ch}
+h1.display em{font-family:var(--f-serif);font-style:italic;font-weight:400;color:var(--accent);letter-spacing:-.02em}
+.deck{font-size:clamp(17px,1.6vw,21px);line-height:1.5;color:var(--muted);max-width:680px}
+.accent-rule{width:64px;height:2px;background:var(--accent);margin:36px 0 0}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink);margin-top:56px}
+.hero-stats .st{padding:26px 26px;border-right:1px solid var(--rule)}
+.hero-stats .st:last-child{border-right:0}
+.hero-stats .num{font-family:var(--f-display);font-size:clamp(40px,4vw,60px);font-weight:400;letter-spacing:-.035em;line-height:1}
+.hero-stats .lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:10px}
+@media(max-width:760px){.hero-stats{grid-template-columns:1fr 1fr}.hero-stats .st:nth-child(2){border-right:0}.hero-stats .st:nth-child(1),.hero-stats .st:nth-child(2){border-bottom:1px solid var(--rule)}}
+
+/* ---------- section ---------- */
+section.sec{padding:88px 0 0}
+.section-num{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--muted-2);text-transform:uppercase;margin-bottom:14px}
+.section-num b{color:var(--accent);font-weight:500}
+h2.sh{font-family:var(--f-display);font-weight:500;font-size:clamp(28px,3.4vw,46px);letter-spacing:-.02em;line-height:1.08;margin:0 0 10px}
+h2.sh em{font-family:var(--f-serif);font-style:italic;color:var(--accent);font-weight:400}
+p.muted{color:var(--muted);font-size:16px;line-height:1.55;max-width:740px}
+
+/* ---------- layer legend (interactive filters) ---------- */
+.layers{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--rule);margin:32px 0 0}
+.layer{padding:26px;border-right:1px solid var(--rule);cursor:pointer;transition:background .2s;position:relative}
+.layer:last-child{border-right:0}
+.layer:hover{background:var(--paper-2)}
+.layer.sel{background:var(--ink)}
+.layer.sel .lh{color:#fff}.layer.sel p{color:var(--muted-2)}
+.layer .ln{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.layer .ln .sq{width:9px;height:9px;display:inline-block}
+.layer.l1 .sq{background:var(--accent)} .layer.l2 .sq{background:var(--ink)} .layer.l3 .sq{background:var(--muted-2)}
+.layer.l2.sel .sq{background:#fff} .layer.l3.sel .sq{background:#fff}
+.layer .lh{font-size:16px;font-weight:500;letter-spacing:-.012em;margin-bottom:6px;transition:color .2s}
+.layer p{font-size:13px;color:var(--muted);line-height:1.5;margin:0;transition:color .2s}
+.layer .pick{position:absolute;top:18px;right:18px;font-family:var(--f-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);opacity:0;transition:opacity .2s}
+.layer:hover .pick,.layer.sel .pick{opacity:1}
+.layer.sel .pick{color:var(--accent)}
+@media(max-width:760px){.layers{grid-template-columns:1fr}.layer{border-right:0;border-bottom:1px solid var(--rule)}.layer:last-child{border-bottom:0}}
+
+/* ---------- controls bar ---------- */
+.controls-wrap{margin:44px 0 0;border-bottom:1px solid var(--rule);padding-bottom:24px}
+.controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.controls.row2{margin-top:18px}
+.controls .flabel{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-right:2px}
+.search{flex:1;min-width:200px;max-width:320px;position:relative}
+.search input{width:100%;border:1px solid var(--rule);background:var(--paper);font-family:var(--f-display);font-size:14px;padding:11px 15px;color:var(--ink);outline:none;transition:border-color .15s;border-radius:0}
+.search input:focus{border-color:var(--accent)}
+.search input::placeholder{color:var(--muted-2)}
+.btn-flat{font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--rule);padding:10px 14px;cursor:pointer;transition:.15s}
+.btn-flat:hover{border-color:var(--ink);color:var(--ink)}
+.chip{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--rule);padding:8px 13px;cursor:pointer;transition:.15s;white-space:nowrap}
+.chip:hover{border-color:var(--ink);color:var(--ink)}
+.chip.sel{background:var(--ink);color:#fff;border-color:var(--ink)}
+.count{font-family:var(--f-mono);font-size:11px;color:var(--muted-2);margin-left:auto}
+@media(max-width:760px){.count{margin-left:0;width:100%}}
+
+/* ---------- brand entries ---------- */
+.brands{border-top:1px solid var(--ink)}
+.brand-row{border-bottom:1px solid var(--rule);transition:opacity .3s}
+.brand-row.hide{display:none}
+.brand-head{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:20px;padding:30px 0;cursor:pointer;transition:padding-left .2s}
+.brand-head:hover{padding-left:8px}
+.brand-idx{font-family:var(--f-mono);font-size:12px;color:var(--muted-2);width:30px}
+.brand-name{font-family:var(--f-display);font-size:clamp(20px,2.2vw,28px);font-weight:500;letter-spacing:-.015em}
+.brand-sector{font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.brand-dots{display:flex;gap:5px;align-items:center}
+.brand-dots .sq{width:10px;height:10px}
+.brand-dots .sq.l1{background:var(--accent)}.brand-dots .sq.l2{background:var(--ink)}.brand-dots .sq.l3{background:var(--muted-2)}
+.chev{width:22px;height:22px;position:relative;flex-shrink:0}
+.chev::before,.chev::after{content:"";position:absolute;top:10px;width:11px;height:1.5px;background:var(--ink);transition:transform .3s}
+.chev::before{left:1px;transform:rotate(45deg)}
+.chev::after{right:1px;transform:rotate(-45deg)}
+.brand-row.open .chev::before{transform:rotate(-45deg)}
+.brand-row.open .chev::after{transform:rotate(45deg)}
+.brand-row.open .brand-name{color:var(--accent)}
+
+/* deep-dive panel */
+.brand-body{max-height:0;overflow:hidden;transition:max-height .5s ease}
+.brand-row.open .brand-body{max-height:4000px}
+.brand-body-inner{min-height:calc(100vh - 72px);display:flex;flex-direction:column;padding:8px 0 64px;border-top:1px solid var(--rule-2)}
+
+/* meta strip */
+.brand-meta{display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--rule);margin:24px 0 28px}
+.brand-meta .m{padding:16px 22px;border-right:1px solid var(--rule);flex:1;min-width:150px}
+.brand-meta .m:last-child{border-right:0}
+.brand-meta .mk{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);margin-bottom:7px}
+.brand-meta .mv{font-size:16px;font-weight:500;letter-spacing:-.01em;color:var(--ink)}
+.brand-meta .mv.rev{color:var(--accent)}
+@media(max-width:760px){.brand-meta .m{flex:1 1 50%;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}}
+
+.brand-desc{font-family:var(--f-serif);font-size:19px;line-height:1.5;color:var(--ink);max-width:880px;margin:0 0 40px}
+
+/* three columns */
+.deepcols{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--ink);flex:1}
+.dcol{padding:26px 26px 26px 26px;border-right:1px solid var(--rule)}
+.dcol:last-child{border-right:0}
+.dcol .dlabel{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.dcol .dnum{width:18px;height:18px;border:1px solid currentColor;display:inline-flex;align-items:center;justify-content:center;font-size:9px;border-radius:0}
+.dcol.c1 .dlabel{color:var(--warn)} .dcol.c2 .dlabel{color:var(--accent)} .dcol.c3 .dlabel{color:var(--ok)}
+.dcol h4{font-family:var(--f-display);font-weight:500;font-size:17px;letter-spacing:-.012em;line-height:1.25;margin:0 0 14px}
+.dcol .noticed-text{font-family:var(--f-serif);font-style:italic;font-size:16px;line-height:1.5;color:var(--ink);border-left:2px solid var(--accent);padding-left:10px}
+.dcol .sc-list{display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
+.dcol .sc-list li{
+  position:relative;background:var(--paper-2);border:1px solid var(--rule);
+  padding:16px 18px 16px 20px;overflow:hidden;
+  opacity:0;transform:translateX(-14px);
+  transition:transform .25s cubic-bezier(.2,.7,.3,1),border-color .25s,background .25s;
+}
+.dcol .sc-list li::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);
+  transform:scaleY(0);transform-origin:top;transition:transform .4s ease;
+}
+.brand-row.open .dcol .sc-list li{animation:solIn .5s cubic-bezier(.2,.7,.3,1) forwards}
+.brand-row.open .dcol .sc-list li::before{transform:scaleY(1)}
+.dcol .sc-list li:nth-child(1){animation-delay:.10s}
+.dcol .sc-list li:nth-child(2){animation-delay:.20s}
+.dcol .sc-list li:nth-child(3){animation-delay:.30s}
+.dcol .sc-list li:nth-child(4){animation-delay:.40s}
+.dcol .sc-list li:hover{border-color:var(--accent);background:var(--accent-soft);transform:translateX(3px)}
+@keyframes solIn{to{opacity:1;transform:translateX(0)}}
+.dcol .sc-list .sc-head{display:flex;align-items:baseline;gap:9px;margin-bottom:6px}
+.dcol .sc-list .sc-n{font-family:var(--f-mono);font-size:10px;color:var(--accent);letter-spacing:.08em;flex-shrink:0;line-height:1.4}
+.dcol .sc-list .sc-title{font-size:14.5px;font-weight:600;letter-spacing:-.012em;color:var(--ink);line-height:1.3}
+.dcol .sc-list .sc-body{font-size:13px;line-height:1.5;color:var(--muted);padding-left:19px}
+.dcol .scenario{font-size:13px;color:var(--muted);line-height:1.5;margin-top:6px;padding-left:18px;border-left:0}
+.casebox{border:1px solid var(--rule);background:var(--paper-2);padding:18px;margin-top:4px}
+.casebox .cs-brand{font-size:15px;font-weight:600;letter-spacing:-.01em;margin-bottom:6px}
+.casebox .cs-result{font-family:var(--f-serif);font-style:italic;font-size:15px;color:var(--accent);line-height:1.4;margin-bottom:10px}
+.casebox .cs-desc{font-size:13px;color:var(--muted);line-height:1.5}
+.casebox .cs-tag{font-family:var(--f-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);margin-top:12px;display:block}
+@media(max-width:900px){.deepcols{grid-template-columns:1fr;border-top:0}.dcol{border-right:0;border-top:1px solid var(--rule);padding:24px 0}.dcol:first-child{border-top:1px solid var(--ink)}}
+@media(max-width:760px){
+  .brand-head{grid-template-columns:1fr auto;gap:10px}
+  .brand-idx,.brand-dots{display:none}
+  .brand-body-inner{min-height:0}
+}
+
+/* ---------- ABOUT route ---------- */
+.about-hero{padding:96px 0 0}
+.wwh{margin:56px 0 0;border-top:1px solid var(--ink)}
+.wwh .row{display:grid;grid-template-columns:160px 1fr;gap:40px;padding:52px 0;border-bottom:1px solid var(--rule)}
+.wwh .tag{font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);padding-top:10px}
+.wwh h2{font-family:var(--f-display);font-weight:500;font-size:clamp(28px,3.6vw,44px);letter-spacing:-.02em;line-height:1.06;margin:0 0 18px;max-width:20ch}
+.wwh h2 em{font-family:var(--f-serif);font-style:italic;font-weight:400;color:var(--accent)}
+.wwh p{font-size:16px;color:var(--ink-2);line-height:1.62;margin:0 0 14px;max-width:720px}
+.wwh p:last-child{margin-bottom:0}
+.principles{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--rule);margin-top:36px}
+.principles .pr{padding:24px 20px;border-right:1px solid var(--rule);transition:background .2s}
+.principles .pr:last-child{border-right:0}
+.principles .pr:hover{background:var(--paper-2)}
+.principles .pn{font-family:var(--f-mono);font-size:11px;color:var(--accent);margin-bottom:14px}
+.principles .ph{font-size:15px;font-weight:500;letter-spacing:-.01em;line-height:1.25}
+@media(max-width:900px){.principles{grid-template-columns:1fr 1fr}.principles .pr{border-right:0;border-bottom:1px solid var(--rule)}.principles .pr:nth-child(2n){border-right:0}}
+@media(max-width:760px){.wwh .row{grid-template-columns:1fr;gap:16px}.principles{grid-template-columns:1fr}}
+
+/* ---------- footer ---------- */
+.doc-foot{border-top:1px solid var(--rule);padding:32px 0;margin-top:80px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2)}
+.doc-foot a{color:var(--accent);text-decoration:none;cursor:pointer}
+.disc{font-family:var(--f-display);text-transform:none;letter-spacing:0;font-size:12px;color:var(--muted);max-width:600px;line-height:1.55;margin:0 0 80px}
+
+.rv{opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s}
+.rv.in{opacity:1;transform:none}
+/* PASSWORD GATE */
+#gate{
+  position:fixed;inset:0;z-index:9999;background:var(--paper);
+  display:flex;align-items:center;justify-content:center;padding:24px;
+}
+#gate[aria-hidden="true"]{display:none}
+#gate-form{
+  width:100%;max-width:320px;display:flex;flex-direction:column;gap:14px;
+}
+.gate-brand{
+  display:flex;align-items:center;gap:9px;font-family:var(--f-mono);
+  font-size:13px;letter-spacing:.04em;color:var(--ink);margin-bottom:6px;
+}
+.gate-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);display:inline-block}
+#gate-form label{font-family:var(--f-serif);font-size:18px;color:var(--ink-2)}
+#gate-input{
+  font-family:var(--f-display);font-size:15px;padding:12px 14px;
+  border:1px solid var(--rule);border-radius:8px;outline:none;color:var(--ink);
+}
+#gate-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+#gate-form button{
+  font-family:var(--f-display);font-size:15px;font-weight:500;cursor:pointer;
+  padding:12px 14px;border:none;border-radius:8px;background:var(--ink);color:#fff;
+}
+#gate-form button:hover{background:var(--ink-2)}
+#gate-error{font-family:var(--f-mono);font-size:12px;color:var(--warn);min-height:16px;display:none}
+#gate-error.show{display:block}
+</style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div id="gate" aria-hidden="false">
+  <form id="gate-form" autocomplete="off">
+    <div class="gate-brand"><span class="gate-dot"></span><span>devx labs</span></div>
+    <label for="gate-input">This page is protected</label>
+    <input id="gate-input" type="password" placeholder="Enter password" autocomplete="off" autofocus>
+    <button type="submit">Unlock</button>
+    <div id="gate-error">Incorrect password</div>
+  </form>
+</div>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="full inner">
+    <div class="brand" data-go="map"><span class="dot"></span><span class="name">devx labs</span></div>
+    <div class="nav">
+      <a data-go="map" class="active">Use-Case Mapping</a>
+      <a data-go="about">About devx</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ROUTE: MAPPING ============ -->
+<div class="route show" id="route-map">
+  <div class="hero full">
+    <div class="hero-inner">
+      <div class="eyebrow">Prepared for Sharrp Ventures · Confidential · June 2026</div>
+      <h1 class="display">The AI-native use-case mapping, <em>brand by brand.</em></h1>
+      <p class="deck">How devx labs would deploy AI across the Sharrp Ventures portfolio — what each brand does, what we noticed, and the moves we'd prioritize. Every use case is anchored in work already delivered for consumer brands.</p>
+      <div class="accent-rule"></div>
+    </div>
+    <div class="hero-stats">
+      <div class="st"><div class="num">28</div><div class="lbl">Portfolio brands</div></div>
+      <div class="st"><div class="num">3</div><div class="lbl">Transformation layers</div></div>
+      <div class="st"><div class="num">7</div><div class="lbl">Industry segments covered</div></div>
+      <div class="st"><div class="num">70</div><div class="lbl">Use cases identified</div></div>
+    </div>
+  </div>
+
+  <section class="sec full" id="menu">
+    <div class="section-num">Section <b>01</b> · The menu</div>
+    <h2 class="sh">Three layers of <em>transformation.</em></h2>
+    <p class="muted">Tap a layer to filter the portfolio to brands where it applies. Tap again to clear.</p>
+    <div class="layers">
+      <div class="layer l1" data-filter="1"><div class="ln"><span class="sq"></span>Layer 1 · Lead strength</div><div class="lh">Customer Experience</div><p>Reimagining every touchpoint — discovery, checkout, personalization, omnichannel.</p><span class="pick">filter →</span></div>
+      <div class="layer l2" data-filter="2"><div class="ln"><span class="sq"></span>Layer 2</div><div class="lh">AI-Led Operations</div><p>Marketing, inventory and ops workflows that anticipate, so teams don't fire-fight.</p><span class="pick">filter →</span></div>
+      <div class="layer l3" data-filter="3"><div class="ln"><span class="sq"></span>Layer 3</div><div class="lh">Enterprise Architecture</div><p>The cloud, ERP/CRM and data foundation that makes AI-native experiences possible.</p><span class="pick">filter →</span></div>
+    </div>
+  </section>
+
+  <section class="sec full" id="mapping">
+    <div class="section-num">Section <b>02</b> · Portfolio mapping</div>
+    <h2 class="sh">Every brand, matched to the <em>menu.</em></h2>
+    <p class="muted">Tap any brand to expand its profile: what they do, what we noticed, and the use cases we'd prioritize.</p>
+
+    <div class="controls-wrap">
+      <div class="controls">
+        <div class="search"><input type="text" id="search" placeholder="Search brands…"></div>
+        <button class="btn-flat" id="expandAll">Expand all</button>
+        <button class="btn-flat" id="collapseAll">Collapse all</button>
+        <span class="count" id="count"></span>
+      </div>
+      <div class="controls row2">
+        <span class="flabel">Industry</span>
+        <div id="industryChips" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+      </div>
+    </div>
+
+    <div class="brands" id="brands"></div>
+  </section>
+
+  <div class="full">
+    <div class="doc-foot">
+      <span>The DevX Use-Case Mapping · v1.2</span>
+      <span>Singapore · India · <a href="https://devxlabs.ai/case-studies">devxlabs.ai/case-studies</a></span>
+    </div>
+    <p class="disc">Prepared as a reference for Sharrp Ventures. Business descriptions are neutral summaries; observations and use-case mappings are illustrative of work devx labs has delivered for consumer brands and are directional, not commitments. No confidential financial or contact information is included.</p>
+  </div>
+</div>
+
+<!-- ============ ROUTE: ABOUT ============ -->
+<div class="route" id="route-about">
+  <div class="about-hero full">
+    <div class="hero-inner">
+      <div class="eyebrow">About · devx labs</div>
+      <h1 class="display">An AI-native build partner for <em>consumer brands.</em></h1>
+      <p class="deck">We design like a top-tier consulting firm that ships code. The what, the why, and the how — before the portfolio mapping.</p>
+      <div class="accent-rule"></div>
+    </div>
+
+    <div class="wwh">
+      <div class="row">
+        <div class="tag">What</div>
+        <div>
+          <h2>We build AI-native customer experiences for <em>consumer brands.</em></h2>
+          <p>devx labs designs and ships the customer-facing AI that consumer brands compete on — conversational commerce, personalization, headless storefronts — and the operations and architecture underneath that let it scale. AI is the design principle, not a feature bolted on afterward.</p>
+          <p>The work spans the full journey: web, app, in-store and WhatsApp, unified into one experience. From AR-led skin analysis to sub-two-second storefronts, it is built and in production today.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="tag">Why</div>
+        <div>
+          <h2>Consumer brands compete on experience and margin <em>at once.</em></h2>
+          <p>Those two pressures usually pull against each other. AI is where they resolve — sharper discovery and conversion on one side, fewer operational fire-drills and lower cost to serve on the other.</p>
+          <p>For an investor, the read is portfolio-level: the same class of AI investment lifts revenue quality and operational efficiency across many brands at once, rather than one bespoke build at a time.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="tag">How</div>
+        <div>
+          <h2>Three layers. <em>One anchor.</em></h2>
+          <p>We lead with Customer Experience — our core strength — compound it with AI-Led Operations, and stand both on a solid Enterprise Architecture foundation. Most engagements touch more than one layer.</p>
+          <p>Every use case in the mapping is tied to something already delivered, so it reads as a menu of proven moves rather than a wishlist.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="full" style="padding-left:0;padding-right:0">
+      <div class="doc-foot full"><span>devx labs · The doctrine in practice</span><span><a data-go="map">→ See the portfolio mapping</a></span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const LN={1:"CX",2:"AI Ops",3:"Enterprise"};
+const B=[
+ {n:`Nykaa`,s:`Beauty & Personal Care`,rev:`~\$943M`,loc:`Mumbai, IN`,layers:[1, 2],desc:`Online marketplace for cosmetics, skincare, haircare, wellness and fashion, spanning its own labels and thousands of third-party brands across web, app and stores.`,noticed:`At marketplace scale, the bottleneck is discovery, not traffic — and a sprawling martech and support stack adds cost and latency faster than it adds value.`,sol:[{h:`Hyper-personalized discovery engine`,sc:`A returning shopper opens the app and sees a feed rebuilt around her skin type, past baskets and the season — not a generic best-seller grid.`},{h:`Agentic support and martech consolidation`,sc:`Routine 'where is my order' and returns queries resolve themselves, and three overlapping marketing tools collapse into one agentic layer.`}],case:{b:`Foxtale`,r:`AR skin analysis → 40% conversion uplift`,d:`An AI-led skin-analysis flow turned passive browsing into guided, personalized discovery — the same discovery problem at brand scale.`}},
+ {n:`Mamaearth`,s:`Beauty & Personal Care`,rev:`~\$63M`,loc:`Gurgaon, IN`,layers:[1, 2, 3],desc:`Natural, MADE SAFE-certified skin, hair, body, baby and makeup products, sold across D2C, marketplaces and a wide offline footprint under a multi-brand house.`,noticed:`A broad SKU range across many channels makes catalogue consistency and forecasting the hard problems — demand is already there.`,sol:[{h:`Omnichannel orchestration`,sc:`A customer who browses on the app and buys in-store sees one consistent price, offer and loyalty balance across every surface.`},{h:`Demand forecasting across SKUs`,sc:`The planning team sees per-SKU demand by channel weeks ahead, so a viral product doesn't go out of stock the day it trends.`},{h:`PIM/MDM for the multi-brand catalogue`,sc:`One source of truth for product data feeds every marketplace listing automatically, instead of teams re-keying specs per channel.`}],case:{b:`Aiza & Cetaphil`,r:`Shopify-to-ERP/WMS data pipelines`,d:`Built the middleware so orders, inventory and the ERP stay in lockstep automatically — the backbone a multi-brand catalogue needs.`}},
+ {n:`Purplle`,s:`Beauty & Personal Care`,rev:`~\$57M`,loc:`Mumbai, IN`,layers:[1, 3],desc:`Online marketplace selling beauty and cosmetic products across many brands, with a value-led, recommendation-driven shopping model.`,noticed:`Conversion hinges on confident product choice, yet first-party data sits unused and fragmented across systems.`,sol:[{h:`AI shopping assistant + virtual try-on`,sc:`A shopper unsure of a shade sees it on her own face and asks the assistant follow-ups, instead of bouncing to research elsewhere.`},{h:`Unified recommendation and search`,sc:`Search understands 'something for oily skin under ₹500' as intent, surfacing the right SKUs rather than keyword matches.`},{h:`Customer data platform`,sc:`Browsing, purchase and app behaviour merge into one profile that powers every recommendation in real time.`}],case:{b:`Foxtale`,r:`AR skin analysis → 40% conversion uplift`,d:`Personalized, science-led discovery that lifted conversion — directly transferable to a beauty marketplace funnel.`}},
+ {n:`mCaffeine`,s:`Beauty & Personal Care`,rev:`~\$5M`,loc:`Mumbai, IN`,layers:[1],desc:`India's first caffeine-based skin and hair care brand, D2C-led with a focused, concern-driven catalogue.`,noticed:`A lean team and a concern-led catalogue reward storefront speed and sharp personalization over breadth.`,sol:[{h:`Storefront modernization + AI cart`,sc:`A shopper on a slow connection still loads the product page in under two seconds and checks out in a couple of taps.`},{h:`Concern-tuned personalization`,sc:`Someone shopping for 'dark circles' is guided through a routine, not just shown one product.`}],case:{b:`Beardo, Cetaphil, Secret Alchemist`,r:`cartx conversion lifts`,d:`Checkout and cart optimization that removed friction between intent and purchase for comparable D2C beauty brands.`}},
+ {n:`CureSkin`,s:`Health & Wellness`,rev:`~\$8M`,loc:`Bengaluru, IN`,layers:[2, 1],desc:`AI-driven app for assessment and ongoing care of skin and hair conditions, pairing diagnosis with a guided treatment regimen.`,noticed:`The clinical funnel is where time is lost; the same assessment can both triage a case and drive the right regimen.`,sol:[{h:`AI-native pre-consultation assessment`,sc:`A user's uploaded photos and answers are structured before a dermatologist ever looks, so consults start informed and move faster.`},{h:`Regimen recommendation + cross-sell`,sc:`Once a condition is assessed, the right multi-step regimen is assembled automatically, lifting both outcomes and basket size.`}],case:{b:`Foxtale`,r:`AR skin analysis at scale`,d:`Image-based skin analysis driving personalized recommendation — the same assessment-to-regimen pattern, proven in production.`}},
+ {n:`Nat Habit`,s:`Beauty & Personal Care`,rev:`~\$12M`,loc:`Gurugram, IN`,layers:[1, 2],desc:`Fresh, preservative-free natural and Ayurvedic skin and hair care, made in small batches with a strong routine-led proposition.`,noticed:`Freshness is both the promise and the constraint — routines need guidance, and perishable stock punishes forecasting errors.`,sol:[{h:`Guided Ayurvedic routine builder`,sc:`A customer answers a few questions and gets a dosha-aware routine, ordered in the right sequence, instead of guessing across products.`},{h:`WhatsApp conversational commerce`,sc:`Re-orders and questions happen in a WhatsApp thread the customer already lives in, not a separate app.`},{h:`Fresh-product demand forecasting`,sc:`Production is planned to actual demand signals so small-batch freshness doesn't turn into waste.`}],case:{b:`Foxtale`,r:`250K users in 30 days`,d:`Scaled a personalized, guidance-led experience fast — the engine a routine-led brand needs to grow without losing the personal touch.`}},
+ {n:`Smytten`,s:`Consumer Tech`,rev:`~\$68M`,loc:`Bengaluru, IN`,layers:[3, 1],desc:`App platform for product trials and discovery across lifestyle brands, sitting on a rich stream of trial and intent data.`,noticed:`The real asset is the consumer-insight data; offline sampling adds a channel that still needs orchestrating.`,sol:[{h:`Consumer-insight data platform`,sc:`Brand partners get a clean, queryable view of trial-to-purchase behaviour instead of raw, scattered event logs.`},{h:`Omnichannel sampling orchestration`,sc:`An online trial and an offline sample for the same user reconcile into one journey, not two disconnected touchpoints.`}],case:{b:`Smytten-class data work`,r:`Data platform modernization`,d:`Structuring fragmented behavioural data into an analytics-ready foundation — the core of monetizing trial insight.`}},
+ {n:`HealthKart`,s:`Health & Wellness`,rev:`~\$139M`,loc:`Gurgaon, IN`,layers:[1],desc:`Online store for health supplements, sports nutrition and fitness products, with own labels and a network of retail outlets.`,noticed:`Buyers want guidance, not a catalogue; replenishment and omnichannel are the natural retention levers.`,sol:[{h:`AI nutrition advisor`,sc:`A first-time buyer describes a goal — 'lean muscle, lactose-free' — and gets a stack recommendation, not a search results page.`},{h:`Replenishment + subscription engine`,sc:`A protein buyer is reminded and re-ordered just before they run out, turning a one-off into a subscription.`},{h:`Omnichannel across web, app and stores`,sc:`Loyalty and history follow the customer from the app into a HealthKart outlet seamlessly.`}],case:{b:`HealthKart-class retail`,r:`Advisor + replenishment patterns`,d:`Conversational guidance and subscription retention flows proven across comparable supplements and nutrition catalogues.`}},
+ {n:`Bold Care`,s:`Health & Wellness`,rev:`~\$11M`,loc:`India`,layers:[1],desc:`Men's sexual wellness and health products spanning performance and intimate care, in a discretion-sensitive category.`,noticed:`Discretion and trust gate the entire funnel; keyword search fails on a sensitive, euphemism-heavy catalogue.`,sol:[{h:`Discreet conversational consult`,sc:`A hesitant first-time buyer gets a private, judgement-free AI consult that recommends the right product without a human call.`},{h:`Intent-aware catalogue search`,sc:`Search understands euphemisms and symptoms, surfacing the right product where literal keyword matching would return nothing.`}],case:{b:`Bold Care-class discovery`,r:`Conversational consult + intent search`,d:`Discreet, intent-led product guidance — the pattern that converts a sensitive, trust-gated category.`}},
+ {n:`Kapiva`,s:`Health & Wellness`,rev:`~\$169M`,loc:`Bengaluru, IN`,layers:[1, 2],desc:`Modern Ayurvedic wellness brand of herbal juices, supplements and personal care, sold across D2C, marketplaces and offline.`,noticed:`Wellness outcomes are personal and repeat-driven, while SKU breadth across channels strains planning.`,sol:[{h:`AI wellness advisor`,sc:`A customer's concern — 'low energy, poor sleep' — maps to a personalized regimen rather than a category page.`},{h:`Subscription + loyalty automation`,sc:`Repeat regimens auto-renew with adherence nudges, lifting lifetime value on a naturally repeat category.`},{h:`Demand forecasting across channels`,sc:`Juices and supplements are planned per channel so fast-movers stay in stock without overstocking the rest.`}],case:{b:`Ayurvedic Hair Care brand`,r:`Scalp diagnostics → 67% AOV growth`,d:`Science-led Ayurvedic personalization that grew average order value sharply — the same regimen-led model.`}},
+ {n:`Power Gummies`,s:`Health & Wellness`,rev:`~\$4M`,loc:`New Delhi, IN`,layers:[1],desc:`Chewable dietary supplement gummies for hair, nails and everyday wellness, D2C-first with a tight product range.`,noticed:`A small team and a focused range make automation and retention worth more than catalogue expansion.`,sol:[{h:`Quiz-based recommendation`,sc:`A short quiz routes a shopper to the right gummy and a starter pack, raising first-order confidence.`},{h:`Subscription + retention flows`,sc:`Auto-replenishment and win-back flows run without manual ops, fitting a lean team.`},{h:`Storefront + AI cart`,sc:`A fast, conversion-tuned storefront does the heavy lifting a large growth team otherwise would.`}],case:{b:`Beardo, Secret Alchemist`,r:`cartx conversion lifts`,d:`Cart and checkout optimization that lifted conversion for lean D2C teams with focused ranges.`}},
+ {n:`The Good Bug`,s:`Health & Wellness`,rev:`~\$31M`,loc:`Mumbai, IN`,layers:[1],desc:`Gut-health and wellness products designed around protocols rather than one-off purchases.`,noticed:`Outcomes depend on adherence; the protocol model only works if customers actually stay on it.`,sol:[{h:`Gut-health assessment + protocol`,sc:`A symptom questionnaire produces a structured multi-week protocol, not a single SKU recommendation.`},{h:`Adherence-driven replenishment`,sc:`Nudges and auto-refills are timed to the protocol so customers complete the program and re-order.`}],case:{b:`The Good Bug-class protocol`,r:`Assessment + adherence engine`,d:`Assessment-to-protocol personalization with adherence nudges — built for outcome-driven, repeat categories.`}},
+ {n:`The Ayurveda Experience`,s:`Health & Wellness`,rev:`~\$88M`,loc:`Singapore`,layers:[1, 3],desc:`Ayurvedic beauty and wellness platform selling cross-border into North America and Australia.`,noticed:`Selling cross-border makes localization and analytics first-order problems, not afterthoughts.`,sol:[{h:`Localized AI personalization`,sc:`A US shopper and an AU shopper each see currency, claims and routines adapted to their market automatically.`},{h:`Quiz-driven discovery assistant`,sc:`A newcomer to Ayurveda is guided by concept, not Sanskrit SKU names, lowering the barrier to first purchase.`},{h:`Global analytics data platform`,sc:`Customer behaviour across regions consolidates into one analytics view for cross-border decisions.`}],case:{b:`Ayurvedic Hair Care brand`,r:`Connected commerce stack`,d:`Connected the commerce and analytics stack for an Ayurvedic brand — the foundation cross-border analytics needs.`}},
+ {n:`Vyome Therapeutics`,s:`Health & Wellness`,rev:`~\$4M`,loc:`Delhi, IN`,layers:[2],desc:`Develops therapeutics for acne, immuno-inflammatory and rare diseases — a research-led, documentation-heavy operation.`,noticed:`The bottleneck is internal: regulatory documentation and scientific knowledge work, not a storefront.`,sol:[{h:`Regulatory documentation automation`,sc:`Draft regulatory filings and dossiers are assembled from structured source data, compressing weeks of manual writing.`},{h:`Agentic knowledge base for R&D`,sc:`Scientists query the entire body of internal research in plain language instead of hunting through documents.`}],case:{b:`FortyTwo Labs`,r:`Zero-downtime secure cloud migration`,d:`Delivered compliant, secure infrastructure for a regulated environment — the rigour a therapeutics operation demands.`}},
+ {n:`Zouk`,s:`Lifestyle`,rev:`~\$4M`,loc:`Mumbai, IN`,layers:[1],desc:`Modern Indian lifestyle brand for vegan-leather bags, wallets and footwear, sold D2C, on marketplaces and offline.`,noticed:`Post-purchase — returns, support, loyalty — is where lifestyle repeat rates are won or lost.`,sol:[{h:`Conversational post-purchase`,sc:`Returns, exchanges and 'where is my order' are handled in-thread, turning a support cost into a retention moment.`},{h:`Omnichannel loyalty`,sc:`A purchase in a marketplace and one on the D2C site both count toward the same loyalty relationship.`}],case:{b:`Frido, EUME, Comet`,r:`retailOS omnichannel rollouts`,d:`Unified online and offline into one experience for comparable lifestyle brands — the retailOS playbook.`}},
+ {n:`SuperBottoms`,s:`Lifestyle`,rev:`~\$9M`,loc:`Mumbai, IN`,layers:[1],desc:`Reusable cloth diapering and eco-friendly baby essentials brand, serving first-time and repeat parents.`,noticed:`New parents need guidance on fit and need; the category is inherently subscription-shaped.`,sol:[{h:`Parenting advisor + size finder`,sc:`An anxious first-time parent is guided to the right size and starter bundle, instead of decoding a product grid.`},{h:`Subscription + loyalty automation`,sc:`Growth-stage size upgrades and refills are anticipated and re-ordered as the baby grows.`}],case:{b:`SuperBottoms-class baby D2C`,r:`Advisor + subscription flows`,d:`Guided discovery plus subscription retention — the pattern that fits a guidance-heavy, repeat baby category.`}},
+ {n:`SleepyCat`,s:`Lifestyle`,rev:`~\$6M`,loc:`Howrah, IN`,layers:[1],desc:`Online-first 'mattress in a box' manufacturer and retailer, expanding across channels.`,noticed:`High-consideration, low-frequency purchases live or die on guided selection and a smooth trial-and-return path.`,sol:[{h:`Guided firmness / mattress finder`,sc:`A buyer answers sleep-style questions and gets one confident recommendation, removing the paralysis of a big-ticket choice.`},{h:`Conversational trial + returns`,sc:`The 100-night-trial and return process is handled conversationally, reducing anxiety at the point of purchase.`},{h:`Omnichannel consistency`,sc:`The same guidance and pricing hold whether the customer is online or in a partner store.`}],case:{b:`The Sleep Company`,r:`11s → 2s load time`,d:`Rebuilt a sleep brand's storefront for speed and guided selection — directly comparable category and journey.`}},
+ {n:`Neeman's`,s:`Lifestyle`,rev:`~\$6M`,loc:`Hyderabad, IN`,layers:[1, 2],desc:`Sustainable footwear brand for men and women, balancing a growing range against size-curve complexity.`,noticed:`Footwear search and sizing are perennial friction, and size-curve mismatches quietly tie up working capital in stock.`,sol:[{h:`Intent-aware search`,sc:`'Breathable everyday shoes for standing all day' returns the right styles, not a keyword-matched list.`},{h:`Conversational support + loyalty`,sc:`Fit questions and exchanges are resolved in-thread, protecting repeat rates.`},{h:`Size-curve forecasting`,sc:`Inventory is planned by size distribution per style so the popular sizes don't sell out first.`}],case:{b:`The Sleep Company`,r:`2s storefront + guided journey`,d:`Speed and guided discovery rebuild proven on a comparable D2C product brand.`}},
+ {n:`Bira 91`,s:`Food & Beverage`,rev:`~\$802M`,loc:`New Delhi, IN`,layers:[2],desc:`Modern Indian craft beer brand with a portfolio of award-winning beers, distributed across a complex supply chain.`,noticed:`The leverage is upstream — consumer insight and supply-chain planning, not a direct storefront.`,sol:[{h:`Insight-to-action engine`,sc:`Consumer and sales signals become concrete marketing and distribution moves, instead of dashboards no one acts on.`},{h:`Digital-twin supply simulation`,sc:`Distribution and production scenarios are simulated before committing, de-risking a complex, regulated supply chain.`}],case:{b:`The Sleep Company`,r:`Automated field operations`,d:`Took field operations from spreadsheets to intelligent routing at scale — the operational backbone for complex distribution.`}},
+ {n:`Slurrp Farm`,s:`Food & Beverage`,rev:`~\$4M`,loc:`India`,layers:[1, 2],desc:`Healthy, natural and organic food products for children, sold across D2C, marketplaces and quick-commerce.`,noticed:`Parents buy on repeat once trust is built, and perishables make forecasting unforgiving.`,sol:[{h:`Subscription + retention flows`,sc:`A trusted staple is auto-replenished on the family's cadence, smoothing revenue and retention.`},{h:`Perishable demand forecasting`,sc:`Production is matched to demand across q-commerce and D2C so fresh kids' food isn't wasted.`},{h:`Omnichannel + q-commerce orchestration`,sc:`Stock and offers stay aligned across marketplaces and 10-minute delivery.`}],case:{b:`BharatGo`,r:`AI-powered e-commerce automation`,d:`Automated e-commerce operations end to end — the workflow layer a multi-channel food brand needs.`}},
+ {n:`Good Monk`,s:`Food & Beverage`,rev:`~\$11M`,loc:`Bengaluru, IN`,layers:[1, 2],desc:`Nutrition health mixes, fibre supplements and drink mixes for families, early in its growth.`,noticed:`Early-stage and nutrition-led: guidance, repeat and lean operations matter more than heavy scale tooling.`,sol:[{h:`Nutrition advisor + quiz`,sc:`A parent's goal maps to the right mix and dosage, building first-order confidence.`},{h:`Subscription + loyalty`,sc:`Repeat nutrition staples auto-renew, the cheapest growth a young brand has.`},{h:`Lean demand forecasting`,sc:`A small team gets demand signals that prevent both stockouts and dead inventory.`}],case:{b:`BharatGo`,r:`E-commerce automation`,d:`Operational automation that lets a lean team run like a larger one.`}},
+ {n:`Troovy Foods`,s:`Food & Beverage`,rev:`Early-stage`,loc:`India`,layers:[1, 2],desc:`Nutrition-packed food products for children, building its D2C presence.`,noticed:`A kids'-nutrition brand wins on parent trust and repeat, and perishability sets the operational constraint.`,sol:[{h:`Parenting + nutrition advisor`,sc:`A parent is guided to age-appropriate products, lowering the barrier to a first purchase.`},{h:`Subscription automation`,sc:`Staples re-order on a family cadence without manual intervention.`},{h:`Perishable forecasting`,sc:`Demand-matched production protects margins on perishable goods.`}],case:{b:`Slurrp Farm-class kids' food`,r:`Subscription + forecasting`,d:`Repeat-and-perishable patterns proven on a comparable children's food brand.`}},
+ {n:`MetaShot`,s:`Gaming`,rev:`~\$6M`,loc:`Bengaluru, IN`,layers:[3, 2],desc:`Console-based gaming company focused on sports games, with a player base that scales in bursts.`,noticed:`This is an infrastructure and analytics story — scale, retention and AI features, not commerce.`,sol:[{h:`Cloud-native architecture for burst scale`,sc:`The platform absorbs a launch-day spike without falling over, then scales back down to control cost.`},{h:`Player analytics + churn prediction`,sc:`At-risk players are flagged early so retention interventions land before they leave.`},{h:`LLMOps as a managed service`,sc:`AI-driven game features ship and stay reliable without the team building MLOps from scratch.`}],case:{b:`Tya Suites`,r:`Multi-account IaC & CI/CD automation`,d:`Infrastructure-as-code and CI/CD built for scale — the foundation a bursty gaming platform runs on.`}},
+ {n:`Wooqer`,s:`Consumer Tech`,rev:`~\$16M`,loc:`San Jose, US`,layers:[3],desc:`Cloud workflow-automation OS for frontline teams, covering operations, audits and learning.`,noticed:`As a platform itself, the win is embedding AI into the product, not building a new front end.`,sol:[{h:`Embedded agentic AI / LLMOps`,sc:`Frontline users describe a workflow in plain language and the platform builds it — AI inside the product, not bolted beside it.`}],case:{b:`Wooqer-class platform`,r:`Embedded LLMOps`,d:`Productionizing agentic AI as a managed capability inside an existing platform.`}},
+ {n:`Securens`,s:`Other`,rev:`~\$28M`,loc:`Mumbai, IN`,layers:[2, 3],desc:`IoT-based electronic surveillance and intrusion-alarm monitoring for enterprises, operating at high event volume.`,noticed:`Alarm volume overwhelms human triage; the signal is in the video and the response workflow.`,sol:[{h:`AI video analytics`,sc:`Feeds are screened automatically so analysts see real anomalies, not hours of empty footage.`},{h:`Automated alarm triage`,sc:`False alarms are filtered and genuine incidents routed to the right responder instantly.`},{h:`Cloud-native IoT data platform`,sc:`Thousands of devices stream into one scalable platform built for real-time decisioning.`}],case:{b:`FortyTwo Labs`,r:`Zero-downtime secure migration`,d:`Secure, compliant, high-availability infrastructure — the reliability bar a monitoring operation requires.`}},
+ {n:`All About Outdoor`,s:`Other`,rev:`~\$7M`,loc:`India`,layers:[1, 3, 2],desc:`Out-of-home advertising solutions and an industry guide, sitting on fragmented inventory data.`,noticed:`OOH inventory is hard to discover and plan against, and campaign operations are still largely manual.`,sol:[{h:`Media-planning assistant`,sc:`An advertiser describes a campaign and gets a buildable plan against available OOH inventory, conversationally.`},{h:`Inventory data platform`,sc:`Scattered OOH availability is aggregated into one queryable, monetizable dataset.`},{h:`Campaign ops automation`,sc:`Booking, reporting and reconciliation run automatically instead of by spreadsheet.`}],case:{b:`All About Outdoor-class media`,r:`Inventory platform + assistant`,d:`Aggregating fragmented inventory data and layering a conversational planning interface on top.`}},
+ {n:`LEAP India`,s:`Other`,rev:`~\$22M`,loc:`Mumbai, IN`,layers:[2, 1],desc:`Integrated pallet pooling and supply-chain solutions provider, managing assets across a wide network.`,noticed:`Asset positioning and route efficiency are the cost centre, and clients want self-serve visibility.`,sol:[{h:`Pallet demand forecasting`,sc:`Pallets are pre-positioned where demand will be, cutting empty repositioning miles.`},{h:`Route + logistics optimization`,sc:`Movements are optimized in real time against a live network view.`},{h:`Client self-serve assistant`,sc:`Clients ask 'where are my assets' and get an instant answer instead of raising a ticket.`}],case:{b:`LEAP-class supply chain`,r:`Forecasting + route intelligence`,d:`Demand forecasting and logistics optimization for asset-heavy network operations.`}},
+ {n:`Cleevo`,s:`Consumer Tech`,rev:`Seed-stage`,loc:`India`,layers:[1],desc:`Early-stage consumer brand, building its initial customer journey.`,noticed:`At the earliest stage, the highest-leverage move is getting the conversational front end right from day one.`,sol:[{h:`Conversational commerce foundation`,sc:`The first customer experience is AI-native from launch — discovery, support and checkout in one guided thread, no legacy to undo later.`}],case:{b:`Foxtale`,r:`250K users in 30 days`,d:`Stood up a personalized, conversational experience that scaled fast from a standing start.`}},
+];
+
+/* ---- render brands ---- */
+const root=document.getElementById('brands');
+const countEl=document.getElementById('count');
+let activeFilter=null, searchTerm="", activeIndustry=null;
+
+B.forEach((b,i)=>{
+  const dots=b.layers.map(l=>`<span class="sq l${l}"></span>`).join("");
+  const sols=b.sol.map((sx,n)=>`<li><div class="sc-head"><span class="sc-n">0${n+1}</span><span class="sc-title">${sx.h}</span></div><div class="sc-body">${sx.sc}</div></li>`).join("");
+  const row=document.createElement('div');
+  row.className="brand-row rv";
+  row.dataset.name=b.n.toLowerCase();
+  row.dataset.industry=b.s;
+  row.dataset.layers=b.layers.join(",");
+  row.innerHTML=`
+    <div class="brand-head">
+      <div class="brand-idx">${String(i+1).padStart(2,'0')}</div>
+      <div class="brand-name">${b.n}</div>
+      <div class="brand-dots">${dots}</div>
+      <div style="display:flex;align-items:center;gap:18px">
+        <span class="brand-sector">${b.s}</span>
+        <span class="chev"></span>
+      </div>
+    </div>
+    <div class="brand-body"><div class="brand-body-inner">
+      <div class="brand-meta">
+        <div class="m"><div class="mk">Revenue</div><div class="mv rev">${b.rev}</div></div>
+        <div class="m"><div class="mk">Industry segment</div><div class="mv">${b.s}</div></div>
+        <div class="m"><div class="mk">Location</div><div class="mv">${b.loc}</div></div>
+      </div>
+      <p class="brand-desc">${b.desc}</p>
+      <div class="deepcols">
+        <div class="dcol c1">
+          <div class="dlabel"><span class="dnum">1</span>What we noticed</div>
+          <div class="noticed-text">${b.noticed}</div>
+        </div>
+        <div class="dcol c2">
+          <div class="dlabel"><span class="dnum">2</span>How we'd help</div>
+          <ul class="sc-list">${sols}</ul>
+        </div>
+        <div class="dcol c3">
+          <div class="dlabel"><span class="dnum">3</span>Where we've done it</div>
+          <div class="casebox">
+            <div class="cs-brand">${b.case.b}</div>
+            <div class="cs-result">${b.case.r}</div>
+            <div class="cs-desc">${b.case.d}</div>
+            <span class="cs-tag">Delivered · devx labs</span>
+          </div>
+        </div>
+      </div>
+    </div></div>`;
+  row.querySelector('.brand-head').addEventListener('click',()=>{
+    const wasOpen=row.classList.contains('open');
+    row.classList.toggle('open');
+    if(!wasOpen){setTimeout(()=>row.querySelector('.brand-head').scrollIntoView({behavior:'smooth',block:'start'}),60);}
+  });
+  root.appendChild(row);
+});
+
+const rows=[...document.querySelectorAll('.brand-row')];
+
+function applyFilters(){
+  let shown=0;
+  rows.forEach(r=>{
+    const layers=r.dataset.layers.split(",");
+    const matchLayer=!activeFilter||layers.includes(String(activeFilter));
+    const matchSearch=!searchTerm||r.dataset.name.includes(searchTerm);
+    const matchIndustry=!activeIndustry||r.dataset.industry===activeIndustry;
+    const ok=matchLayer&&matchSearch&&matchIndustry;
+    r.classList.toggle('hide',!ok);
+    if(ok)shown++;
+  });
+  countEl.textContent=shown+" / "+B.length+" brands";
+}
+
+/* ---- build industry chips ---- */
+const industries=[...new Set(B.map(b=>b.s))];
+const chipWrap=document.getElementById('industryChips');
+const allChip=document.createElement('button');
+allChip.className="chip sel";allChip.textContent="All";allChip.dataset.ind="";
+chipWrap.appendChild(allChip);
+industries.forEach(ind=>{
+  const c=document.createElement('button');
+  c.className="chip";c.textContent=ind;c.dataset.ind=ind;
+  chipWrap.appendChild(c);
+});
+chipWrap.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
+  activeIndustry=c.dataset.ind||null;
+  chipWrap.querySelectorAll('.chip').forEach(x=>x.classList.remove('sel'));
+  c.classList.add('sel');
+  applyFilters();
+}));
+
+document.querySelectorAll('.layer').forEach(l=>l.addEventListener('click',()=>{
+  const f=parseInt(l.dataset.filter);
+  if(activeFilter===f){activeFilter=null;l.classList.remove('sel');}
+  else{
+    activeFilter=f;
+    document.querySelectorAll('.layer').forEach(x=>x.classList.remove('sel'));
+    l.classList.add('sel');
+  }
+  applyFilters();
+}));
+
+document.getElementById('search').addEventListener('input',e=>{searchTerm=e.target.value.trim().toLowerCase();applyFilters();});
+document.getElementById('expandAll').addEventListener('click',()=>rows.forEach(r=>{if(!r.classList.contains('hide'))r.classList.add('open')}));
+document.getElementById('collapseAll').addEventListener('click',()=>rows.forEach(r=>r.classList.remove('open')));
+applyFilters();
+
+/* ---- SPA routing ---- */
+function go(route){
+  document.querySelectorAll('.route').forEach(r=>r.classList.remove('show'));
+  document.getElementById('route-'+route).classList.add('show');
+  document.querySelectorAll('.masthead .nav a').forEach(a=>a.classList.toggle('active',a.dataset.go===route));
+  window.scrollTo({top:0,behavior:'instant'});
+  if(history.replaceState)history.replaceState(null,'','#'+route);
+  revealInit();
+}
+document.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click',()=>go(el.dataset.go)));
+if(location.hash==='#about')go('about');
+
+/* ---- scroll reveal ---- */
+let io;
+function revealInit(){
+  if(io)io.disconnect();
+  io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.08});
+  document.querySelectorAll('.route.show .rv').forEach(el=>{el.classList.remove('in');io.observe(el)});
+}
+revealInit();
+</script>
+<script>
+/* Frontend-only password gate. NOTE: not truly secure — the hash is in the
+   page source, so this only deters casual visitors. */
+(function(){
+  // SHA-256 hex of the password.
+  var PASSWORD_HASH = "4b3043758bafe8f3b50de6b5d38e2bf6b882168c0fb45053afb34e4b275c0e7e";
+  var KEY = "devx_gate_ok";
+  var gate = document.getElementById("gate");
+  var form = document.getElementById("gate-form");
+  var input = document.getElementById("gate-input");
+  var err = document.getElementById("gate-error");
+
+  function unlock(){
+    gate.setAttribute("aria-hidden","true");
+  }
+
+  async function sha256(str){
+    var buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(function(b){
+      return b.toString(16).padStart(2,"0");
+    }).join("");
+  }
+
+  if (sessionStorage.getItem(KEY) === "1") { unlock(); }
+
+  form.addEventListener("submit", async function(e){
+    e.preventDefault();
+    err.classList.remove("show");
+    var hash = await sha256(input.value);
+    if (hash === PASSWORD_HASH){
+      sessionStorage.setItem(KEY,"1");
+      unlock();
+    } else {
+      err.classList.add("show");
+      input.value = "";
+      input.focus();
+    }
+  });
+})();
+</script>
+</body>
+</html>
